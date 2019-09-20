@@ -5,14 +5,14 @@ import java.time.Instant;
 public class Availability {
 
     String personName;
-/*    List<AppointmentTimes> appointmentTimes;
-    List<Instant> hoursOfDay;*/
     Instant time;
+    boolean free;
 
-    public Availability(String personName, Instant time)
+    public Availability(String personName, Instant time, boolean free)
     {
         this.personName=personName;
-/*        this.appointmentTimes = appointmentTimes;*/
+        this.time = time;
+        this.free = free;
     }
     public String getPersonName()
     {
@@ -31,22 +31,11 @@ public class Availability {
         this.time = time;
     }
 
-/*    public List<AppointmentTimes> getAppointmentTimes() {
-        return this.appointmentTimes;
+    public boolean getFree() {
+        return free;
     }
 
-    public void setAppointmentTimes(List<AppointmentTimes> appointmentTimes) {
-        this.appointmentTimes = appointmentTimes;
+    public void setFree(boolean free) {
+        this.free = free;
     }
-
-    public List<Instant> getHoursOfDay() {
-        return this.hoursOfDay;
-    }
-
-    public void setHoursOfDay() {
-        Instant hour = Instant.now().truncatedTo(ChronoUnit.DAYS).plus(7, ChronoUnit.HOURS);
-        this.hoursOfDay.add(hour);
-        for (int i = 8; i < 17; i++)
-            this.hoursOfDay.add(hour.plus(1, ChronoUnit.HOURS));
-    }*/
 }

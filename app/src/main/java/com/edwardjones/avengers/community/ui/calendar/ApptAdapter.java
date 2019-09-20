@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.edwardjones.avengers.community.R;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class ApptAdapter extends ArrayAdapter<Availability> {
@@ -30,29 +32,32 @@ public class ApptAdapter extends ArrayAdapter<Availability> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-/*        setTimes();*/
-
         View v = convertView;
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         v = inflater.inflate(R.layout.appt_row, null);
         TextView textView = (TextView) v.findViewById(R.id.personName);
         ImageView imageView = (ImageView) v.findViewById(R.id.apptColor);
-        textView.setText(availabilities.get(position).getPersonName());
-        if (textView.getText().toString().matches("[0-9]+"))
-            textView.setBackgroundResource(R.color.colorPrimary);
-        else
+
+        if (availabilities.get(position).getPersonName() != null) {
+            textView.setText(availabilities.get(position).getPersonName());
             imageView.setImageResource(R.drawable.busy);
+        } else if (availabilities.get(position).getTime() != null) {
+            if (availabilities.get(position).getTime().atZone(ZoneOffset.UTC).getHour() < 12)
+                textView.setText(Integer.toString(availabilities.get(position).getTime().atZone(ZoneOffset.UTC).getHour()) + "AM");
+            else if (availabilities.get(position).getTime().atZone(ZoneOffset.UTC).getHour() == 12) {
+                textView.setText("12PM");
+            } else
+                textView.setText(Integer.toString(availabilities.get(position).getTime().minus(12, ChronoUnit.HOURS).atZone(ZoneOffset.UTC).getHour()) + "PM");
+            textView.setBackgroundResource(R.color.colorPrimary);
+        } else if (availabilities.get(position).getFree()) {
+            textView.setText("Everyone's Free!");
+            imageView.setImageResource(R.drawable.available);
+        }
+
         textView.setTextSize(25);
 
         return v;
 
     }
-
- /*   public void setTimes() {
-        Instant hour = Instant.now().truncatedTo(ChronoUnit.DAYS).plus(7, ChronoUnit.HOURS);
-        times.add(hour);
-        for (int i = 8; i < 17; i++)
-            times.add(hour.plus(1, ChronoUnit.HOURS));
-    }*/
 
 }

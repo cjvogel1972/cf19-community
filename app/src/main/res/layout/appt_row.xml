@@ -11,8 +11,7 @@
         android:layout_height="50px"
         android:layout_marginLeft="5px"
         android:layout_marginRight="20px"
-        android:layout_marginTop="5px"
-        android:src="@drawable/busy" >
+        android:layout_marginTop="5px">
     </ImageView>
 
     <TextView android:id="@+id/personName"
