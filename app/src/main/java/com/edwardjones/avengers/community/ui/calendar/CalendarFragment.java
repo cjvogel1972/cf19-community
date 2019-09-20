@@ -8,6 +8,7 @@ import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.edwardjones.avengers.community.R;
 
@@ -26,19 +27,20 @@ public class CalendarFragment extends Fragment {
                 view.findViewById(R.id.calendar);
 
         // Listener for calendar
-        /*calendar
-                .setOnDateChangeListener(
-                        new CalendarView
-                                .OnDateChangeListener() {
-                            @Override
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                Fragment apptFragment = new ApptFragment();
+                replaceFragment(apptFragment);
+            }
+        });
 
-                            // TODO when day is clicked
-                            public void onSelectDay(
-                                    @NonNull CalendarView view)
-                            {
-
-                            }
-                        });*/
         return view;
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(((ViewGroup)(getView().getParent())).getId(), fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }
