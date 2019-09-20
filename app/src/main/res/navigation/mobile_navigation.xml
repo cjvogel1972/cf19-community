@@ -29,11 +29,11 @@
         android:label="@string/menu_tools"
         tools:layout="@layout/fragment_tools" />
 
-    <fragment
-        android:id="@+id/nav_share"
-        android:name="com.edwardjones.avengers.community.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+C    <fragment
+        android:id="@+id/nav_chat_room"
+        android:name="com.edwardjones.avengers.community.ui.chatroom.ChatRoomFragment"
+        android:label="@string/menu_chat_room"
+        tools:layout="@layout/fragment_chat_room" />
 
     <fragment
         android:id="@+id/nav_send"

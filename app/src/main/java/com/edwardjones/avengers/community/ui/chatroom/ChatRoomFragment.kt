@@ -1,4 +1,4 @@
-package com.edwardjones.avengers.community.ui.share
+package com.edwardjones.avengers.community.ui.chatroom
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.edwardjones.avengers.community.R
 
-class ShareFragment : Fragment() {
+class ChatRoomFragment : Fragment() {
 
-    private lateinit var shareViewModel: ShareViewModel
+    private lateinit var chatRoomViewModel: ChatRoomViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        shareViewModel =
-            ViewModelProviders.of(this).get(ShareViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_share, container, false)
+        chatRoomViewModel =
+            ViewModelProviders.of(this).get(ChatRoomViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_chat_room, container, false)
         val textView: TextView = root.findViewById(R.id.text_share)
-        shareViewModel.text.observe(this, Observer {
+        chatRoomViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
