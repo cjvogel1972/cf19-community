@@ -1,13 +1,13 @@
 package com.edwardjones.avengers.community.ui.chatlobby
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class ChatLobbyViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is messaging Fragment"
+    val roomNames : List<String>
+
+    init {
+        roomNames = listOf("My Branch Team", "Region 77", "Area 2 BOA's", "Region 77 Leaders", "Double Sevens Golf club", "Sixth Room")
+//        roomNames = listOf("My Branch Team", "Region 77")
     }
-    val text: LiveData<String> = _text
 }
