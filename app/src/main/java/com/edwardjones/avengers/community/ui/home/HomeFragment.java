@@ -75,12 +75,10 @@ public class HomeFragment extends Fragment {
                     }
 
                     ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-//                    mapper.rea
                     Feed[] jsonFeeds = mapper.readValue(responseBody.string(), Feed[].class);
                     for (Feed feed : jsonFeeds) {
                         feeds.add(feed);
                     }
-//                    Log.i("FEED", responseBody.string());
                 }
             }
         });
