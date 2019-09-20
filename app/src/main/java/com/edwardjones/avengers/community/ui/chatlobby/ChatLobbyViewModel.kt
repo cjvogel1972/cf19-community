@@ -8,6 +8,5 @@ class ChatLobbyViewModel : ViewModel() {
 
     init {
         roomNames = listOf("My Branch Team", "Region 77", "Area 2 BOA's", "Region 77 Leaders", "Double Sevens Golf club", "Sixth Room")
-//        roomNames = listOf("My Branch Team", "Region 77")
     }
 }
