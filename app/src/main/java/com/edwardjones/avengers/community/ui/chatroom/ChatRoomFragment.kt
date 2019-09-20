@@ -58,7 +58,10 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
             if (message.isNotEmpty()) {
                 // send message on websocket
                 val mapper = ObjectMapper()
-                val message = Message("CHAT", message, "Regional Leader")
+                val message = Message()
+                message.type = "CHAT"
+                message.content = message
+                message.sender = "Regional Leader"
 //                val json = "{ \"type\":\"CHAT\", \"sender\": \"Regional Leader\", \"content\": \"$message\""
                 val json = mapper.writeValueAsString(message)
                 Log.i("CHAT", "${room.id} $json")
@@ -66,7 +69,7 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
 //                    Log.i(TAG, "Reconnecting")
 //                    mStompClient.reconnect()
 //                }
-                mStompClient.send("/app/chat.sendMessage/${room.id}", json)
+                mStompClient.send("/topic/hello-msg-mapping", json).subscribe()
                 editText.text.clear()
             }
         }
@@ -102,7 +105,7 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
             Log.i(TAG, "After stomp client connection")
 
 
-            mStompClient.topic("/topic/public/${room.id}")
+            mStompClient.topic("/topic/greetings")
                 .subscribe{ topicMessage -> onMessage(topicMessage) }
         } catch (e: Throwable) {
             Log.e(TAG, "Some error!", e)
@@ -112,7 +115,7 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
     }
 
     private fun onMessage(topicMessage: StompMessage) {
-        Log.d(TAG, topicMessage.getPayload())
+        Log.d("RECEIVED", topicMessage.getPayload())
         val mapper = ObjectMapper()
         val message = mapper.readValue(topicMessage.payload, Message::class.java)
         activity?.runOnUiThread {
@@ -123,6 +126,7 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
 
     companion object {
         const val STOMP_BASE_URL = "chatapp.codefest.ads-avengers.com"
+//        const val STOMP_BASE_URL = "167.80.166.113:8080"
         const val TAG = "CHAT"
     }
 }
