@@ -29,7 +29,7 @@ class ChatLobbyFragment : Fragment() {
             ViewModelProviders.of(this).get(ChatLobbyViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_chat_lobby, container, false)
         val gridLayout = root.findViewById<GridLayout>(R.id.lobby_layout)
-        val numRooms = chatLobbyViewModel.roomNames.size
+        val numRooms = chatLobbyViewModel.rooms.size
         val totalRooms = numRooms + 1
         if (totalRooms < 3) {
             gridLayout.columnCount = totalRooms
@@ -48,11 +48,11 @@ class ChatLobbyFragment : Fragment() {
         var column = 0
         var row = 0
         for (i in 0 until numRooms) {
-            var roomName = chatLobbyViewModel.roomNames[i]
-            Log.i("CHAT", roomName)
+            var room = chatLobbyViewModel.rooms[i]
+            Log.i("CHAT", room.name)
             buildButton(i, root, row, column, gridLayout, R.drawable.ic_group)
 
-            buildButtonText(roomName, row + 1, column, gridLayout)
+            buildButtonText(room.name, row + 1, column, gridLayout)
 
             column++
             if (column == 3) {
@@ -115,8 +115,8 @@ class ChatLobbyFragment : Fragment() {
         button.scaleType = ImageView.ScaleType.FIT_CENTER
         button.setOnClickListener {
             val id = it.id - 100
-            val roomName = chatLobbyViewModel.roomNames[id]
-            val apptFragment = ChatRoomFragment(roomName)
+            val room = chatLobbyViewModel.rooms[id]
+            val apptFragment = ChatRoomFragment(room)
             replaceFragment(apptFragment)
 
         }
