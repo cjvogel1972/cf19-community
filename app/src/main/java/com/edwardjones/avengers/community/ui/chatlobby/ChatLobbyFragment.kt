@@ -50,7 +50,7 @@ class ChatLobbyFragment : Fragment() {
         for (i in 0 until numRooms) {
             var roomName = chatLobbyViewModel.roomNames[i]
             Log.i("CHAT", roomName)
-            buildButton(i, root, row, column, gridLayout, R.drawable.ic_chat_room)
+            buildButton(i, root, row, column, gridLayout, R.drawable.ic_group)
 
             buildButtonText(roomName, row + 1, column, gridLayout)
 

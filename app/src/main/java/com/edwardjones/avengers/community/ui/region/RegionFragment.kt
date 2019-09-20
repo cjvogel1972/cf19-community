@@ -1,4 +1,4 @@
-package com.edwardjones.avengers.community.ui.send
+package com.edwardjones.avengers.community.ui.region
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.edwardjones.avengers.community.R
 
-class SendFragment : Fragment() {
+class RegionFragment : Fragment() {
 
-    private lateinit var sendViewModel: SendViewModel
+    private lateinit var regionViewModel: RegionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sendViewModel =
-            ViewModelProviders.of(this).get(SendViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_send, container, false)
+        regionViewModel =
+            ViewModelProviders.of(this).get(RegionViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_region, container, false)
         val textView: TextView = root.findViewById(R.id.text_send)
-        sendViewModel.text.observe(this, Observer {
+        regionViewModel.text.observe(this, Observer {
             textView.text = it
         })
         return root
