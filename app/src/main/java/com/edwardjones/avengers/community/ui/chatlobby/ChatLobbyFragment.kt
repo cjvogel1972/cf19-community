@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.edwardjones.avengers.community.R
+import com.edwardjones.avengers.community.ui.chatroom.ChatRoomFragment
 
 class ChatLobbyFragment : Fragment() {
 
@@ -112,11 +113,25 @@ class ChatLobbyFragment : Fragment() {
         params.columnSpec = GridLayout.spec(column)
         button.layoutParams = params
         button.scaleType = ImageView.ScaleType.FIT_CENTER
+        button.setOnClickListener {
+            val id = it.id - 100
+            val roomName = chatLobbyViewModel.roomNames[id]
+            val apptFragment = ChatRoomFragment(roomName)
+            replaceFragment(apptFragment)
+
+        }
         gridLayout.addView(button)
     }
 
     fun dpToPx(dp: Int, context: Context?): Int {
         val density = context?.getResources()?.getDisplayMetrics()?.density
         return Math.round(dp.toFloat() * density!!)
+    }
+
+    fun replaceFragment(fragment: Fragment) {
+        val transaction = fragmentManager!!.beginTransaction()
+        transaction.replace((view!!.parent as ViewGroup).id, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
