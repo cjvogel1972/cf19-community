@@ -45,8 +45,16 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
         messageAdapter = context?.let { MessageAdapter(it) }!!
         messagesView = root.findViewById<ListView>(R.id.messages_view)
         messagesView.adapter = messageAdapter
-        messageAdapter.add(Message("CHAT", "Hello Codefest", "ADS Avengers"))
-        messageAdapter.add(Message("CHAT", "Hello Avengers", "Regional Leader"))
+        var msg1 = Message()
+        msg1.type = "CHAT"
+        msg1.content = "Hello Codefest"
+        msg1.sender = "ADS Avengers"
+        var msg2 = Message()
+        msg2.type = "CHAT"
+        msg2.content = "Hello Avengers"
+        msg2.sender = "Regional Leader"
+        messageAdapter.add(msg1)
+        messageAdapter.add(msg2)
 
         val sendButton = root.findViewById<ImageButton>(R.id.send_message)
         val editText = root.findViewById<EditText>(R.id.editText)
@@ -58,12 +66,12 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
             if (message.isNotEmpty()) {
                 // send message on websocket
                 val mapper = ObjectMapper()
-                val message = Message()
-                message.type = "CHAT"
-                message.content = message
-                message.sender = "Regional Leader"
+                val msg = Message()
+                msg.type = "CHAT"
+                msg.content = message
+                msg.sender = "Regional Leader"
 //                val json = "{ \"type\":\"CHAT\", \"sender\": \"Regional Leader\", \"content\": \"$message\""
-                val json = mapper.writeValueAsString(message)
+                val json = mapper.writeValueAsString(msg)
                 Log.i("CHAT", "${room.id} $json")
 //                if (!mStompClient.isConnected) {
 //                    Log.i(TAG, "Reconnecting")
