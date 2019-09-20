@@ -10,25 +10,27 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.edwardjones.avengers.community.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class HomeFragment extends Fragment {
 
     ListView feed;
     ArrayList<Feed> feeds = new ArrayList<>();
-    RequestQueue requestQueue;
+    OkHttpClient client;
+//    RequestQueue requestQueue;
     String url;
 
     @Override
@@ -42,7 +44,8 @@ public class HomeFragment extends Fragment {
         feed = (ListView)
                 view.findViewById(R.id.feed);
 
-        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        client = new OkHttpClient();
+
         getFeed();
 
         FeedAdapter feedAdapter = new FeedAdapter(getContext(),R.layout.feed_row,feeds);
@@ -53,38 +56,34 @@ public class HomeFragment extends Fragment {
     private void getFeed () {
         this.url = "http://ads19-feed-ws.codefest.ads-avengers.com/feeddata/feed/";
 
-        JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        if (response.length() > 0) {
-                            for (int i = 0; i < response.length(); i++) {
-                                try {
-                                    JSONObject jsonObj = response.getJSONObject(i);
-                                    Feed tempFeed = new Feed();
-                                    tempFeed.setAuthor(jsonObj.get("author").toString());
-                                    tempFeed.setContent(jsonObj.get("content").toString());
-                                    feeds.add(tempFeed);
-                                } catch (JSONException e) {
-                                    // If there is an error then output this to the logs.
-                                    Log.e("request", "Invalid JSON Object.");
-                                }
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
-                            }
-                        } else {
-                            // TODO
-                        }
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                Log.e("FEED", "Error", e);
+            }
 
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    Headers responseHeaders = response.headers();
+                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                        Log.i("FEED", responseHeaders.name(i) + ": " + responseHeaders.value(i));
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("request", error.toString());
+
+                    ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+//                    mapper.rea
+                    Feed[] jsonFeeds = mapper.readValue(responseBody.string(), Feed[].class);
+                    for (Feed feed : jsonFeeds) {
+                        feeds.add(feed);
                     }
+//                    Log.i("FEED", responseBody.string());
                 }
-        );
-        requestQueue.add(arrReq);
+            }
+        });
         try {
             Thread.sleep(1000);
         } catch (Exception e) {

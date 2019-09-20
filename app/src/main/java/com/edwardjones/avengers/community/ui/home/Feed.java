@@ -3,10 +3,19 @@ package com.edwardjones.avengers.community.ui.home;
 import java.time.Instant;
 
 public class Feed {
+    public Integer getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(Integer feedId) {
+        this.feedId = feedId;
+    }
+
+    Integer feedId;
     String author;
     String content;
     Instant timestamp;
-    String picture;
+    String picturePath;
 
     public String getAuthor() {
         return author;
@@ -20,8 +29,8 @@ public class Feed {
         return timestamp;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getPicturePath() {
+        return picturePath;
     }
 
     public void setAuthor(String author) {
@@ -36,7 +45,7 @@ public class Feed {
         this.timestamp = timestamp;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }
