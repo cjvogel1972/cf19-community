@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment {
     ListView feed;
     ArrayList<Feed> feeds = new ArrayList<>();
     OkHttpClient client;
-//    RequestQueue requestQueue;
     String url;
 
     @Override
