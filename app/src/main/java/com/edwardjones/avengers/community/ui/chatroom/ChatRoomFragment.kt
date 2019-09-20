@@ -13,16 +13,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.edwardjones.avengers.community.R
 import com.fasterxml.jackson.databind.ObjectMapper
 
-//import ua.naiksoftware.stomp.LifecycleEvent
-//import ua.naiksoftware.stomp.Stomp
-//import ua.naiksoftware.stomp.client.StompClient
-//import ua.naiksoftware.stomp.client.StompMessage
+import ua.naiksoftware.stomp.LifecycleEvent
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.client.StompClient
+import ua.naiksoftware.stomp.client.StompMessage
 
-import com.techdew.stomplibrary.LifecycleEvent
-import com.techdew.stomplibrary.Stomp
-import com.techdew.stomplibrary.StompClient
-import com.techdew.stomplibrary.StompMessage
-import org.java_websocket.WebSocket
+//import com.techdew.stomplibrary.LifecycleEvent
+//import com.techdew.stomplibrary.Stomp
+//import com.techdew.stomplibrary.StompClient
+//import com.techdew.stomplibrary.StompMessage
+//import org.java_websocket.WebSocket
 
 class ChatRoomFragment(room: ChatRoom) : Fragment() {
 
@@ -78,15 +78,14 @@ class ChatRoomFragment(room: ChatRoom) : Fragment() {
 
         Log.i(TAG, "Before stomp client creation")
         try {
+//            mStompClient = Stomp.over(
+//                WebSocket::class.java, "ws://" + STOMP_BASE_URL
+//                        + "/ws/websocket")
             mStompClient = Stomp.over(
-                WebSocket::class.java, "ws://" + STOMP_BASE_URL
+                Stomp.ConnectionProvider.OKHTTP, "ws://" + STOMP_BASE_URL
                         + "/ws/websocket"
             )
-//            mStompClient = Stomp.over(
-//                Stomp.ConnectionProvider.OKHTTP, "ws://" + STOMP_BASE_URL
-//                        + "/ws/websocket"
-//            )
-//            mStompClient.setHeartbeat(1000)
+            mStompClient.setHeartbeat(1000)
             Log.i(TAG, "After stomp client creation")
             mStompClient.lifecycle().subscribe { lifecycleEvent ->
                 when (lifecycleEvent.getType()) {
